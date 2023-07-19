@@ -1,3 +1,3 @@
 extends Node
 
-signal player_pos(pos)
+signal tower_pos(pos)
