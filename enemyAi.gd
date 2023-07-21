@@ -5,7 +5,7 @@ var lis = []
 var enemy_num: int
 func _ready():
 	randomize()
-	enemy_num = 54
+	enemy_num = Global.number_ans
 	for e in range(enemy_num+1):
 		var j = str(e, " + ", enemy_num-e)
 		lis.insert(0, j)

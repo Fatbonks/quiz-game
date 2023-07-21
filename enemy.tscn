@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://uk4pb7ln3j3"]
+[gd_scene load_steps=6 format=3 uid="uid://uk4pb7ln3j3"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_7hxbw"]
 [ext_resource type="Texture2D" uid="uid://dhvw3ru8ijal" path="res://icon.svg" id="1_d1n2y"]
 [ext_resource type="PackedScene" uid="uid://ccdmce3einbpq" path="res://enemy_ai.tscn" id="2_60uam"]
+[ext_resource type="Script" path="res://Hitbox.gd" id="4_sq8qx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3itbf"]
 size = Vector2(118, 115)
@@ -17,11 +18,13 @@ texture = ExtResource("1_d1n2y")
 
 [node name="enemyAi" parent="." instance=ExtResource("2_60uam")]
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Hitbox" type="Area2D" parent="." node_paths=PackedStringArray("enemy") groups=["enemy"]]
+script = ExtResource("4_sq8qx")
+enemy = NodePath("..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(1, 0.5)
 shape = SubResource("RectangleShape2D_3itbf")
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Hitbox" to="." method="_on_area_2d_body_exited"]
