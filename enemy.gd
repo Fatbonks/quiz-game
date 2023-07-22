@@ -1,5 +1,5 @@
 extends Node2D
-
+@export var sprite: Node2D
 var tower_position: Vector2
 var in_range: bool
 func _ready():
@@ -7,7 +7,8 @@ func _ready():
 
 func _process(delta):
 	if in_range == false:
-		position = position.move_toward(tower_position, 200 * delta)
+		position = position.move_toward(tower_position, 100 * delta)
+		sprite.look_at(tower_position)
 
 func tower_pos(pos):
 	tower_position = pos
@@ -15,9 +16,8 @@ func tower_pos(pos):
 
 func _on_area_2d_body_entered(body):
 	if body.is_in_group("tower"):
-		in_range = true
-		print("work")
+		pass
 
 
-func _on_area_2d_body_exited(body):
+func _on_area_2d_body_exited(_body):
 	in_range = false

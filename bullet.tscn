@@ -1,26 +1,32 @@
 [gd_scene load_steps=4 format=3 uid="uid://ctlgmjwprmd1b"]
 
-[ext_resource type="Texture2D" uid="uid://dhvw3ru8ijal" path="res://icon.svg" id="1_aiycn"]
 [ext_resource type="Script" path="res://bullet.gd" id="1_cc33e"]
+[ext_resource type="Texture2D" uid="uid://dey2hbyrow2fw" path="res://tilemap.png" id="2_s8gqn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h2eh0"]
-size = Vector2(47, 8)
+size = Vector2(13, 5)
 
 [node name="bullet" type="Area2D"]
 monitorable = false
 script = ExtResource("1_cc33e")
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(5, 0)
+rotation = 1.5708
+texture = ExtResource("2_s8gqn")
+flip_h = true
+hframes = 12
+vframes = 11
+frame = 104
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1.5, 0)
+position = Vector2(6.5, -0.5)
 shape = SubResource("RectangleShape2D_h2eh0")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.445313, 0.0625)
-texture = ExtResource("1_aiycn")
-
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2(0, 5.96046e-08)
-scale = Vector2(1, 0.4)
+position = Vector2(5.5, -0.75)
+scale = Vector2(0.35, 0.175)
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

@@ -1,29 +1,36 @@
 [gd_scene load_steps=6 format=3 uid="uid://uk4pb7ln3j3"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_7hxbw"]
-[ext_resource type="Texture2D" uid="uid://dhvw3ru8ijal" path="res://icon.svg" id="1_d1n2y"]
 [ext_resource type="PackedScene" uid="uid://ccdmce3einbpq" path="res://enemy_ai.tscn" id="2_60uam"]
+[ext_resource type="Texture2D" uid="uid://dey2hbyrow2fw" path="res://tilemap.png" id="2_i15xh"]
 [ext_resource type="Script" path="res://Hitbox.gd" id="4_sq8qx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3itbf"]
-size = Vector2(118, 115)
+size = Vector2(13, 17)
 
-[node name="enemy" type="Node2D"]
-position = Vector2(333, 354)
+[node name="enemy" type="Node2D" node_paths=PackedStringArray("sprite")]
 script = ExtResource("1_7hxbw")
+sprite = NodePath("point")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(1, 0.482353, 0.521569, 1)
-texture = ExtResource("1_d1n2y")
+[node name="point" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="point"]
+texture_filter = 1
+rotation = 1.5708
+texture = ExtResource("2_i15xh")
+hframes = 12
+vframes = 11
+frame = 120
 
 [node name="enemyAi" parent="." instance=ExtResource("2_60uam")]
 
-[node name="Hitbox" type="Area2D" parent="." node_paths=PackedStringArray("enemy") groups=["enemy"]]
+[node name="Hitbox" type="Area2D" parent="." node_paths=PackedStringArray("enemy", "enem_ai") groups=["enemy"]]
 script = ExtResource("4_sq8qx")
 enemy = NodePath("..")
+enem_ai = NodePath("../enemyAi")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(1, 0.5)
+position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_3itbf")
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_area_2d_body_entered"]

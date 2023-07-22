@@ -1,17 +1,59 @@
-[gd_scene load_steps=4 format=3 uid="uid://3lmoop5ba7xg"]
+[gd_scene load_steps=5 format=3 uid="uid://3lmoop5ba7xg"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_cgp5r"]
-[ext_resource type="Texture2D" uid="uid://dhvw3ru8ijal" path="res://icon.svg" id="2_0c06l"]
+[ext_resource type="Texture2D" uid="uid://dey2hbyrow2fw" path="res://tilemap.png" id="2_8uw3y"]
+[ext_resource type="AudioStream" uid="uid://enlyji7ci5yh" path="res://sounds/laserShoot(1).wav" id="3_v2tck"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dktov"]
-size = Vector2(104, 111)
+size = Vector2(104, 96.875)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_cgp5r")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_0c06l")
+texture_filter = 1
+texture = ExtResource("2_8uw3y")
+hframes = 12
+vframes = 11
+frame = 87
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(2, 1.5)
+position = Vector2(0, 0.75)
+scale = Vector2(0.16, 0.16)
 shape = SubResource("RectangleShape2D_dktov")
+
+[node name="dagger" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(5, 3)
+rotation = 0.120428
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_8uw3y")
+hframes = 12
+vframes = 11
+frame = 104
+
+[node name="sword" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(5, 3)
+rotation = 0.120428
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_8uw3y")
+hframes = 12
+vframes = 11
+frame = 106
+
+[node name="axe" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(5, 3)
+rotation = 0.120428
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_8uw3y")
+hframes = 12
+vframes = 11
+frame = 118
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_v2tck")

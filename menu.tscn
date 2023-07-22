@@ -1,0 +1,173 @@
+[gd_scene load_steps=7 format=3 uid="uid://dgyfuumik68gn"]
+
+[ext_resource type="PackedScene" uid="uid://0kgc1tjqwcas" path="res://towersprite.tscn" id="1_nhicq"]
+[ext_resource type="Script" path="res://menu.gd" id="1_xcjea"]
+[ext_resource type="PackedScene" uid="uid://d2jidtf4nbafu" path="res://world.tscn" id="2_agvxf"]
+
+[sub_resource type="Animation" id="Animation_7mlt8"]
+resource_name = "new_animation"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-0.349066, 0.0, 0.349066]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.5, 1.5), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_y2x4a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.5, 1.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.174533]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4yvb3"]
+_data = {
+"RESET": SubResource("Animation_y2x4a"),
+"new_animation": SubResource("Animation_7mlt8")
+}
+
+[node name="menu" type="Node2D"]
+script = ExtResource("1_xcjea")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 382.0
+offset_top = 150.0
+offset_right = 591.0
+offset_bottom = 262.0
+text = "play!!!!!"
+
+[node name="towersa p;lo" parent="." instance=ExtResource("1_nhicq")]
+position = Vector2(681, 354)
+
+[node name="towersa p;lo2" parent="." instance=ExtResource("1_nhicq")]
+position = Vector2(290, 211)
+
+[node name="towersa p;lo3" parent="." instance=ExtResource("1_nhicq")]
+position = Vector2(781, 186)
+
+[node name="towersa p;lo4" parent="." instance=ExtResource("1_nhicq")]
+position = Vector2(296, 372)
+
+[node name="world" parent="." instance=ExtResource("2_agvxf")]
+position = Vector2(494, 320)
+metadata/_edit_group_ = true
+
+[node name="Player" parent="world" index="0"]
+visible = false
+script = null
+
+[node name="Tower" parent="world" index="1"]
+visible = false
+
+[node name="towersprite" parent="world/Tower" index="0"]
+visible = false
+
+[node name="Area2D" parent="world/Tower" index="1"]
+visible = false
+
+[node name="CollisionShape2D" parent="world/Tower/Area2D" index="0"]
+visible = false
+
+[node name="CollisionShape2D" parent="world/Tower/StaticBody2D" index="0"]
+visible = false
+
+[node name="Control" parent="world/Tower" index="3"]
+visible = false
+
+[node name="TextureProgressBar" parent="world/Tower/Control" index="0"]
+visible = false
+
+[node name="spawner" parent="world" index="2"]
+visible = false
+
+[node name="Camera2D" parent="world" index="3"]
+visible = false
+
+[node name="Control" parent="world" index="5"]
+visible = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(500, 326)
+scale = Vector2(0.00489137, 12.6738)
+zoom = Vector2(1.675, 1.675)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("Control/Label")
+libraries = {
+"": SubResource("AnimationLibrary_4yvb3")
+}
+
+[node name="Control" type="Control" parent="AnimationPlayer"]
+layout_mode = 3
+anchor_bottom = 0.031
+offset_left = 489.0
+offset_top = 292.0
+offset_right = 529.0
+offset_bottom = 311.912
+rotation = -0.174533
+scale = Vector2(1.5, 1.5)
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="AnimationPlayer/Control"]
+layout_mode = 0
+offset_left = -62.0
+offset_top = -14.0
+offset_right = 65.0
+offset_bottom = 12.0
+text = "Cool quizx game"
+
+[node name="Label" type="Label" parent="."]
+offset_left = 346.0
+offset_top = 386.0
+offset_right = 810.0
+offset_bottom = 516.0
+text = "howe to play!
+wasd - to move
+left  click - to shoot
+changing between quiz answers - 1 2  3
+to know what answer your on look at the bottom left cornor"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+
+[editable path="world"]
+[editable path="world/Tower"]
