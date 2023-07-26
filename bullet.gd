@@ -4,7 +4,7 @@ var bullet_num:int
 @onready var sprite = $Sprite2D
 func _physics_process(delta):
 	var dir = Vector2.RIGHT.rotated(rotation)
-	global_position += 500 * dir * delta
+	global_position += 1000 * dir * delta
 
 
 func _on_area_entered(area):

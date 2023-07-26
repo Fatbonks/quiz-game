@@ -7,7 +7,7 @@ func _ready():
 
 func _process(delta):
 	if in_range == false:
-		position = position.move_toward(tower_position, 100 * delta)
+		position = position.move_toward(tower_position, 250 * delta)
 		sprite.look_at(tower_position)
 
 func tower_pos(pos):
