@@ -71,7 +71,7 @@ func _physics_process(_delta):
 		dagger.visible = false
 		sword.visible = false
 		axe.visible = true
-	elif Input.is_action_just_pressed("scroll_down"):
+	elif Input.is_action_just_pressed("change_weapon"):
 		if current_weap == 1:
 			current_weap = 2
 			quiz_num = Global.number_ans_2

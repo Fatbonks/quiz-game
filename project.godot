@@ -21,8 +21,9 @@ Global="*res://Global.gd"
 
 [display]
 
+window/size/viewport_height=480
 window/stretch/mode="viewport"
-window/stretch/aspect="ignore"
+window/stretch/aspect="expand"
 mouse_cursor/custom_image="res://tiles.png"
 mouse_cursor/tooltip_position_offset=Vector2(0, 0)
 
