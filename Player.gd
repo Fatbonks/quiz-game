@@ -20,6 +20,7 @@ func _ready():
 	current_weap = 1
 
 func _physics_process(_delta):
+	look_at(get_global_mouse_position())
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction_x = Input.get_axis("ui_left", "ui_right")

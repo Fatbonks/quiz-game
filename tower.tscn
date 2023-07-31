@@ -1,60 +1,68 @@
-[gd_scene load_steps=6 format=3 uid="uid://bb03rq1nichfm"]
+[gd_scene load_steps=4 format=3 uid="uid://bb03rq1nichfm"]
 
 [ext_resource type="Script" path="res://Tower.gd" id="1_eqkcq"]
-[ext_resource type="Texture2D" uid="uid://dhvw3ru8ijal" path="res://icon.svg" id="3_1iact"]
+[ext_resource type="Texture2D" uid="uid://oxft0mdkppvb" path="res://health.png" id="3_fo3hj"]
 [ext_resource type="PackedScene" uid="uid://0kgc1tjqwcas" path="res://towersprite.tscn" id="3_rhnx8"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_upuxm"]
-size = Vector2(80.3032, 127.389)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_a7hup"]
-size = Vector2(80, 128)
-
 [node name="Tower" type="Node2D" node_paths=PackedStringArray("healthbar") groups=["tower"]]
+position = Vector2(51, 11)
 script = ExtResource("1_eqkcq")
 healthbar = NodePath("Control/TextureProgressBar")
 metadata/_edit_group_ = true
 
 [node name="towersprite" parent="." instance=ExtResource("3_rhnx8")]
+visible = false
 position = Vector2(8, -72)
 layer_0/tile_data = PackedInt32Array(1, 65536, 1, 65537, 65536, 1, 131073, 327680, 1, 196605, 262144, 1, 65533, 196608, 1, 131069, 196608, 1, 196606, 131072, 0, 196607, 131072, 0, 131072, 131072, 0, 65534, 0, 0, 131070, 0, 0, 131071, 0, 0, 65535, 0, 0, 0, 0, 0, 65536, 0, 0, 262141, 589824, 4, 262142, 327680, 2, 262143, 131072, 1, 196608, 327680, 2, 196609, 720896, 4, 262145, 720896, 4, 262144, 131072, 1, 327679, 458752, 1, 327678, 262144, 3, 393213, 589824, 4, 393214, 262144, 2, 393215, 262144, 3, 327680, 262144, 2, 327677, 589824, 4, 327681, 720896, 4, 393217, 720896, 4, 393216, 262144, 3, 458751, 589824, 3, 458750, 262144, 3, 458749, 589824, 4, -3, 262144, 0, -2, 131072, 2, -1, 131072, 2, -65536, 131072, 2, -65535, 327680, 0, 524285, 131072, 4, 524286, 131072, 4, 524287, 196608, 4, 458752, 131072, 4, 458753, 131072, 4, 458748, 131072, 262148, 393212, 131072, 262148, 327676, 131072, 262148, 262140, 131072, 262148, 393218, 131072, 196612, 327682, 131072, 196612, 262146, 131072, 196612, 196610, 131072, 196612, 458754, 327680, 4, 524284, 327680, 65540)
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(-11, -3)
+scale = Vector2(5, 5)
+
+[node name="Polygon2D" type="Polygon2D" parent="Node2D"]
+position = Vector2(-61, -47)
+color = Color(0.490196, 0.490196, 0.490196, 1)
+polygon = PackedVector2Array(52, 39, 52, 55, 56, 59, 71, 59, 75, 56, 75, 39, 71, 35, 56, 35)
+
+[node name="Polygon2D2" type="Polygon2D" parent="Node2D"]
+position = Vector2(-61, -47)
+color = Color(0.352941, 0.352941, 0.352941, 0.631373)
+polygon = PackedVector2Array(56, 45, 59, 49, 59, 53, 67, 50, 70, 50, 70, 45, 68, 44, 66.947, 41, 61, 41, 59, 43)
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(8, -71)
 scale = Vector2(0.952318, 0.84477)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-8.15159, 48.3056)
-scale = Vector2(1, 1)
-shape = SubResource("RectangleShape2D_upuxm")
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Area2D"]
+position = Vector2(0, -2.36751)
+scale = Vector2(1.09756, 1.05872)
+polygon = PackedVector2Array(-42.096, 11.181, 29.6585, 11.181, 48.7931, 33.5431, 48.7931, 128.582, 29.6585, 145.353, -42.096, 145.353, -61.2305, 122.991, -61.2305, 33.5431)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." groups=["tower"]]
-visible = false
 position = Vector2(8, -73)
 scale = Vector2(1.04523, 0.894372)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(-8, 48)
-shape = SubResource("RectangleShape2D_a7hup")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PackedVector2Array(-42.096, 11.181, 29.6585, 11.181, 48.7931, 33.5431, 48.7931, 128.582, 29.6585, 145.353, -42.096, 145.353, -61.2305, 122.991, -61.2305, 33.5431)
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = -50.0
-offset_top = -214.0
-offset_right = -10.0
-offset_bottom = -174.0
+offset_left = -32.0
+offset_top = -115.0
+offset_right = 8.0
+offset_bottom = -75.0
+scale = Vector2(0.5, 0.5)
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="Control"]
-modulate = Color(1, 0.34902, 0.313726, 1)
 layout_mode = 0
-offset_left = 8.0
-offset_top = 97.0
-offset_right = 136.0
-offset_bottom = 225.0
+offset_left = -173.0
+offset_top = 78.0
+offset_right = 538.0
+offset_bottom = 206.0
 scale = Vector2(0.68, 0.200001)
 max_value = 50.0
 value = 50.0
-texture_progress = ExtResource("3_1iact")
+texture_progress = ExtResource("3_fo3hj")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

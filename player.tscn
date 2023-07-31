@@ -10,7 +10,25 @@ size = Vector2(104, 96.875)
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_cgp5r")
 
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(-20, 0)
+
+[node name="Polygon2D2" type="Polygon2D" parent="Node2D"]
+color = Color(0.227451, 0.227451, 0.227451, 1)
+polygon = PackedVector2Array(21, 2, 21, 5, 31, 5, 32, 4, 32, 2.96078, 31.0699, 2)
+
+[node name="Polygon2D" type="Polygon2D" parent="Node2D"]
+modulate = Color(0.301961, 0.482353, 0.662745, 1)
+position = Vector2(-4, 0)
+polygon = PackedVector2Array(17, -4, 17, 0.956654, 17, 6, 19, 8, 30, 8, 32, 6, 32, 2, 32, -4, 30, -6, 19, -6)
+
+[node name="Polygon2D3" type="Polygon2D" parent="Node2D"]
+modulate = Color(0.113725, 0.207843, 0.305882, 1)
+position = Vector2(-3, 0)
+polygon = PackedVector2Array(21, 0, 21, 2, 23, 4, 28, 4, 30, 2, 30, 0, 28, -2, 23, -2, 22.0658, -1.31176)
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 texture_filter = 1
 texture = ExtResource("2_8uw3y")
 hframes = 12
