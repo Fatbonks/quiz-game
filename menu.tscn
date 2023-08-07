@@ -77,15 +77,19 @@ offset_bottom = 262.0
 text = "play!!!!!"
 
 [node name="towersa p;lo" parent="." instance=ExtResource("1_nhicq")]
+visible = false
 position = Vector2(681, 354)
 
 [node name="towersa p;lo2" parent="." instance=ExtResource("1_nhicq")]
+visible = false
 position = Vector2(290, 211)
 
 [node name="towersa p;lo3" parent="." instance=ExtResource("1_nhicq")]
+visible = false
 position = Vector2(781, 186)
 
 [node name="towersa p;lo4" parent="." instance=ExtResource("1_nhicq")]
+visible = false
 position = Vector2(296, 372)
 
 [node name="world" parent="." instance=ExtResource("2_agvxf")]

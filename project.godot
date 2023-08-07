@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-SilentWolf="*res://addons/silent_wolf/SilentWolf.gd"
+Lootlockerserver="*res://Lootlockerserver.gd"
 Global="*res://Global.gd"
 
 [display]
@@ -26,10 +26,6 @@ window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 mouse_cursor/custom_image="res://tiles.png"
 mouse_cursor/tooltip_position_offset=Vector2(0, 0)
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/silent_wolf/plugin.cfg")
 
 [input]
 
