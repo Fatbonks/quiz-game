@@ -1,129 +1,186 @@
 extends Node
 
-#General Variables
-
-var session_id = ''
-var game_key = 'dev_5a1a6187daca4ae59310b38022fc8786'
-var game_version = '1.0.0.0'
-var platform = 'godot'
-var score = 3
-var player_name = 'adwads'
-var leaderboard_id = '16742'
+# Use this game API key if you want to test it with a functioning leaderboard
+# "987dbd0b9e5eb3749072acc47a210996eea9feb0"
+var game_API_key = "dev_5a1a6187daca4ae59310b38022fc8786"
+var development_mode = true
+var leaderboard_key = "16742"
 var session_token = ""
-var public_uid = ''
+var score = 0
 
-#HTTP Request
-
-var guest_login_http = HTTPRequest.new()
-var white_label_auth_http = HTTPRequest.new()
-
-var white_label_signup_http = HTTPRequest.new()
-var white_label_login_http = HTTPRequest.new()
-
+# HTTP Request node can only handle one call per node
+var auth_http = HTTPRequest.new()
 var leaderboard_http = HTTPRequest.new()
 var submit_score_http = HTTPRequest.new()
-
-var get_player_name_http = HTTPRequest.new()
-var set_player_name_http = HTTPRequest.new()
-
-#Errors
+var set_name_http = HTTPRequest.new()
+var get_name_http = HTTPRequest.new()
 
 func _ready():
-	add_child(set_player_name_http)
-	add_child(get_player_name_http)
+	_authentication_request()
+
+func _process(_delta):
+	if(Input.is_action_just_pressed("ui_up")):
+		score += 1
+		print("CurrentScore:"+str(score))
 	
-	add_child(submit_score_http)
-	add_child(leaderboard_http)
+	if(Input.is_action_just_pressed("ui_down")):
+		score -= 1
+		print("CurrentScore:"+str(score))
 	
-	add_child(white_label_login_http)
-	add_child(white_label_signup_http)
-	
-	add_child(white_label_auth_http)
-	add_child(guest_login_http)
-	
-	
-	
-	leaderboard_http.request_completed.connect(_get_leaderboard_request_completed)
-	submit_score_http.request_completed.connect(_submit_score_request_completed)
-	
-	get_player_name_http.request_completed.connect(_get_player_name_request_completed)
-	set_player_name_http.request_completed.connect(_set_player_name_request_completed)
-	
-	_upload_score(3)
+	# Upload score when pressing enter
+	if(Input.is_action_just_pressed("ui_accept")):
+		_upload_score(score)
 
 	
-	var headers = ['Content-Type: application/json']
-	var data = {'game_key': game_key, 'game_version': game_version}
+	# Get score when pressing spacebar
+	if(Input.is_action_just_pressed("ui_select")):
+		_get_leaderboards()
+
+
+func _authentication_request():
+	# Check if a player session has been saved
+	var player_session_exists = false
+	var file = FileAccess.open("user://Lootlocker.data", FileAccess.READ)
+	var player_identifier = file.get_as_text()
+#	print(file)
+	file = null
+	if(player_identifier.length() > 1):
+		player_session_exists = true
+		
+	## Convert data to json string:
+	var data = { "game_key": game_API_key, "game_version": "0.0.0.1", "development_mode": true }
 	
+	# If a player session already exists, send with the player identifier
+	if(player_session_exists == true):
+		data = { "game_key": game_API_key, "player_identifier":player_identifier, "game_version": "0.0.0.1", "development_mode": true }
 	
+	# Add 'Content-Type' header:
+	var headers = ["Content-Type: application/json"]
+	
+	# Create a HTTPRequest node for authentication
+	auth_http = HTTPRequest.new()
+	add_child(auth_http)
+	auth_http.request_completed.connect(_on_authentication_request_completed)
+	# Send request
+	auth_http.request
+	auth_http.request("https://api.lootlocker.io/game/v2/session/guest", headers, \
+	HTTPClient.METHOD_POST, JSON.stringify(data))
+	# Print what we're sending, for debugging purposes:
+#	print(data)
+
+
+func _on_authentication_request_completed(result, response_code, headers, body):
+	var json = JSON.parse_string(body.get_string_from_utf8())
+	
+	# Save player_identifier to file
+	var file = FileAccess.open("user://LootLocker.data", FileAccess.WRITE)
+	print(json.player_identifier)
+	file.store_string(json.player_identifier)
+	
+	file.close()
+	
+	# Save session_token to memory
+	session_token = json.session_token
+	
+	# Print server response
+	print(json)
+	
+	# Clear node
+	auth_http.queue_free()
+	# Get leaderboards
+	_get_leaderboards()
+
+
+func _get_leaderboards():
+	print("Getting leaderboards")
+	var url = "https://api.lootlocker.io/game/leaderboards/"+leaderboard_key+"/list?count=10"
+	var headers = ["Content-Type: application/json", "x-session-token:"+session_token]
+	
+	# Create a request node for getting the highscore
+	leaderboard_http = HTTPRequest.new()
+	add_child(leaderboard_http)
+	leaderboard_http.request_completed.connect(_on_leaderboard_request_completed)
+	# Send request
+	leaderboard_http.request(url, headers, HTTPClient.METHOD_GET, "")
+
+
+func _on_leaderboard_request_completed(result, response_code, headers, body):
+	var json = JSON.parse_string(body.get_string_from_utf8())
+	
+	# Print data
+	print(json)
+	
+	# Formatting as a leaderboard
+	var leaderboardFormatted = ""
+	for n in json.items.size():
+		leaderboardFormatted += str(json.items[n].rank)+str(". ")
+		leaderboardFormatted += str(json.items[n].player.id)+str(" - ")
+		leaderboardFormatted += str(json.items[n].score)+str("\n")
+		
+	# Print the formatted leaderboard to the console
+	print(leaderboardFormatted)
+	# Clear node
+	leaderboard_http.queue_free()
+
 
 func _upload_score(score):
-	var data = { "score": str(score) }
+	var data = { "score": str(score)}
 	var headers = ["Content-Type: application/json", "x-session-token:"+session_token]
 	submit_score_http = HTTPRequest.new()
 	add_child(submit_score_http)
-	submit_score_http.connect("request_completed", _submit_score_request_completed)
+	submit_score_http.request_completed.connect(_on_upload_score_request_completed)
 	# Send request
-	submit_score_http.request("https://api.lootlocker.io/game/leaderboards/"+leaderboard_id+"/submit", headers, HTTPClient.METHOD_POST, JSON.stringify(data))
+	submit_score_http.request("https://api.lootlocker.io/game/leaderboards/"+leaderboard_key+"/submit", headers, HTTPClient.METHOD_POST, JSON.stringify(data))
 	# Print what we're sending, for debugging purposes:
 	print(data)
 
-func _get_player_name():
-	var headers = ['x-session-token: ' + session_id, 'LL-version: 2021-03-01', 'Content-Type: application/json']
-	get_player_name_http.request('https://api.lootlocker.io/game/player/name', headers, HTTPClient.METHOD_GET, '')
 
-func _get_player_name_request_completed(_result, _response_code, _headers, body):
+func _on_upload_score_request_completed(result, response_code, headers, body) :
 	var json = JSON.parse_string(body.get_string_from_utf8())
 	
-	if json.has('name'):
-		player_name = json.name
-		print('Pulled player name from lootlocker')
-		print(player_name)
-		
-	if json.has('error'):
-		push_error(json.message)
-
-func _set_player_name():
-	var headers = ['x-session-token:' + session_id, 'LL-version: 2021-03-01', 'Content-Type: application/json']
-	var data = {'name': player_name}
-
-	set_player_name_http.request('https://api.lootlocker.io/game/player/name', headers, HTTPClient.METHOD_PATCH, JSON.stringify(data))
-
-func _set_player_name_request_completed(_result, _response_code, _headers, body):
-	var json = JSON.parse_string(body.get_string_from_utf8())
-	
-	if json.has('error'):
-		push_error(json.message)
-	else:
-		print('Player name set to ' + json.name)
-
-func _get_leaderboard():
-	var headers = ['x-session-token:' + session_id]
-	
-	leaderboard_http.request('https://api.lootlocker.io/game/leaderboards/'+leaderboard_id+'/list?count=10', headers,HTTPClient.METHOD_GET, '')
-
-func _get_leaderboard_request_completed(_result, _response_code, _headers, body):
-	var json = JSON.parse_string(body.get_string_from_utf8())
-	if json.has('error'):
-		push_error(json.message)
-	else:
-		print('LeaderBoard pulled form lootlocker:')
-		print(json.items)
-
-
-func _submit_score():
-	var headers = ['x-session-token:' + session_id, 'Content-Type: application/json']
-	var data = {'score': score}
-
-	submit_score_http.request('https://api.lootlocker.io/game/leaderboards/' +session_id + '/submit', headers, HTTPClient.METHOD_POST, JSON.stringify(data))
-
-func _submit_score_request_completed(_result, _response_code, _headers, body):
-	var json = JSON.parse_string(body.get_string_from_utf8())
-	
-	if json.has('error'):
-		push_error(json.message)
+	# Print data
+	print(json)
 	
 	# Clear node
 	submit_score_http.queue_free()
 
+func _change_player_name():
+	print("Changing player name")
+	
+	# use this variable for setting the name of the player
+	var player_name = "Bob"
+	
+	var data = { "name": "Dwasda" }
+	var url =  "https://api.lootlocker.io/game/player/name"
+	var headers = ["Content-Type: application/json", "x-session-token:"+session_token]
+	
+	# Create a request node for getting the highscore
+	set_name_http = HTTPRequest.new()
+	add_child(set_name_http)
+	set_name_http.connect("request_completed", _on_player_set_name_request_completed)
+	# Send request
+	set_name_http.request(url, headers, HTTPClient.METHOD_PATCH, JSON.stringify(data))
+	
+func _on_player_set_name_request_completed(result, response_code, headers, body):
+	var json = JSON.parse_string(body.get_string_from_utf8())
+	print(json)
+	set_name_http.queue_free()
 
+func _get_player_name():
+	print("Getting player name")
+	var url = "https://api.lootlocker.io/game/player/name"
+	var headers = ["Content-Type: application/json", "x-session-token:"+session_token]
+	
+	# Create a request node for getting the highscore
+	get_name_http = HTTPRequest.new()
+	add_child(get_name_http)
+	get_name_http.connect("request_completed", _on_player_get_name_request_completed)
+	# Send request
+	get_name_http.request(url, headers, HTTPClient.METHOD_GET, "")
+	
+func _on_player_get_name_request_completed(result, response_code, headers, body):
+	var json = JSON.parse_string(body.get_string_from_utf8())
+	
+	# Print data
+
+	# Print player name
