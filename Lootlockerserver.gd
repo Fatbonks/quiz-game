@@ -41,8 +41,9 @@ func _authentication_request():
 	# Check if a player session has been saved
 	var player_session_exists = false
 	var file = FileAccess.open("user://Lootlocker.data", FileAccess.READ)
+	print(file)
 	var player_identifier = file.get_as_text()
-#	print(file)
+	print(file)
 	file = null
 	if(player_identifier.length() > 1):
 		player_session_exists = true

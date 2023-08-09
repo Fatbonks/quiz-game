@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d2jidtf4nbafu"]
+[gd_scene load_steps=12 format=3 uid="uid://d2jidtf4nbafu"]
 
 [ext_resource type="PackedScene" uid="uid://3lmoop5ba7xg" path="res://player.tscn" id="1_0n13y"]
 [ext_resource type="Script" path="res://world.gd" id="1_v1mgq"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://spawner.gd" id="5_62ppi"]
 [ext_resource type="Texture2D" uid="uid://djilyudip5vjg" path="res://tilemap_packed.png" id="6_4hkc5"]
 [ext_resource type="AudioStream" uid="uid://cabt5ioo646ot" path="res://sounds/8bit Bossa.mp3" id="6_hxnqh"]
-[ext_resource type="Script" path="res://LeaderBoard.gd" id="7_0y0d7"]
 
 [sub_resource type="Curve2D" id="Curve2D_y3rw0"]
 _data = {
@@ -294,12 +293,12 @@ autoplay = true
 environment = SubResource("Environment_b03ag")
 
 [node name="LeaderBoard" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 4
-script = ExtResource("7_0y0d7")
 
 [node name="Colunm" type="ItemList" parent="LeaderBoard"]
 custom_minimum_size = Vector2(200, 200)
