@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://spawner.gd" id="5_62ppi"]
 [ext_resource type="Texture2D" uid="uid://djilyudip5vjg" path="res://tilemap_packed.png" id="6_4hkc5"]
 [ext_resource type="AudioStream" uid="uid://cabt5ioo646ot" path="res://sounds/8bit Bossa.mp3" id="6_hxnqh"]
+[ext_resource type="Script" path="res://LeaderBoard.gd" id="7_qrqkc"]
 
 [sub_resource type="Curve2D" id="Curve2D_y3rw0"]
 _data = {
@@ -185,8 +186,6 @@ glow_bloom = 0.51
 glow_hdr_threshold = 2.0
 glow_hdr_scale = 3.8
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p3c4o"]
-
 [node name="world" type="Node2D" node_paths=PackedStringArray("label")]
 position = Vector2(579, 341)
 script = ExtResource("1_v1mgq")
@@ -293,43 +292,52 @@ autoplay = true
 environment = SubResource("Environment_b03ag")
 
 [node name="LeaderBoard" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 4
+script = ExtResource("7_qrqkc")
 
-[node name="Colunm" type="ItemList" parent="LeaderBoard"]
-custom_minimum_size = Vector2(200, 200)
-layout_mode = 2
-offset_left = -276.0
-offset_top = -62.0
-offset_right = 81.0
-offset_bottom = 290.0
-item_count = 4
-max_columns = 4
-same_column_width = true
-fixed_column_width = 80
-item_0/text = "Name"
-item_0/selectable = false
-item_1/text = "Score"
-item_1/selectable = false
-item_2/text = "Correct"
-item_2/selectable = false
-item_3/text = "Incorrect"
-item_3/selectable = false
+[node name="GridContainer" type="GridContainer" parent="LeaderBoard"]
+layout_mode = 0
+offset_right = 230.0
+offset_bottom = 26.0
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 1
+columns = 4
 
-[node name="names" type="ItemList" parent="LeaderBoard"]
+[node name="Label" type="Label" parent="LeaderBoard/GridContainer"]
 layout_mode = 2
-offset_left = -269.0
-offset_top = -34.0
-offset_right = -189.0
-offset_bottom = 166.0
-theme_override_styles/panel = SubResource("StyleBoxTexture_p3c4o")
-allow_search = false
-same_column_width = true
-fixed_column_width = 80
+text = "Name"
+
+[node name="Label2" type="Label" parent="LeaderBoard/GridContainer"]
+layout_mode = 2
+text = "Score"
+
+[node name="Label3" type="Label" parent="LeaderBoard/GridContainer"]
+layout_mode = 2
+text = "Correct"
+
+[node name="Label4" type="Label" parent="LeaderBoard/GridContainer"]
+layout_mode = 2
+text = "Incorrect"
+
+[node name="GridContainer2" type="GridContainer" parent="LeaderBoard"]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 12.0
+offset_right = 58.81
+offset_bottom = 312.0
+
+[node name="ItemList" type="ItemList" parent="LeaderBoard/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 11
+auto_height = true
+item_count = 1
+item_0/text = "awda"
 
 [connection signal="timeout" from="spawner/enemy_spawn_timer" to="spawner" method="_on_enemy_spawn_timer_timeout"]
 [connection signal="pressed" from="Control/Button" to="spawner" method="_on_button_pressed"]
