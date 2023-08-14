@@ -1,16 +1,30 @@
 extends Node
 
 
-var score = 0
+# dictionary for server
 var metadata = {
-	"coins": 5,
-	"scores": 6
+	"Incorrect": 0,
+	"Missed": 0,
+	"Accuracy": 0,
+	"Combo": 0,
+	"Completed_Waves": 0 
 	}
-var player_name = "bob"
+	
+# variables
 var number_ans = 500
 var number_ans_2 = 200
 var number_ans_3 = 100
 var amount_enemys_left = 0
+
+var player_name = "bob"
+# Player Stats for leaderboard
+var score: int
+var Missed: float = 200.0
+var Correct: float = 10.0
+var Accuracy: float
+var Combo: int
+var Completed_Waves:int
+# Signals
 signal tower_pos(pos)
 signal display_current_ans(ans)
 
@@ -28,10 +42,10 @@ func _ready():
 	})
 
 	SilentWolf.Scores.save_score("bob", 2, "main", metadata)
-	SilentWolf.Scores.save_score("rod", 3, "main", metadata)
-	SilentWolf.Scores.save_score("tod", 4, "main", metadata)
+	calculate_score()
+
+func calculate_score():
+	print(100.0 - (((Correct + Missed) - Correct) / (Correct + Missed) * 100.0))
+	print("work")
 
 
-func get_score(score, coins):
-
-	return score * 1000 + coins
