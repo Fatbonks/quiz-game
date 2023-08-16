@@ -179,7 +179,6 @@ texture = ExtResource("6_4hkc5")
 sources/0 = SubResource("TileSetAtlasSource_htkun")
 
 [sub_resource type="Environment" id="Environment_b03ag"]
-glow_enabled = true
 glow_normalized = true
 glow_intensity = 4.93
 glow_bloom = 0.51
