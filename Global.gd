@@ -3,27 +3,23 @@ extends Node
 
 # dictionary for server
 var metadata = {
-	"Incorrect": 0,
-	"Missed": 0,
-	"Accuracy": 0,
+	"Correct": 20.0,
+	"Missed": 80.0,
+	"Accuracy": 0.0,
 	"Combo": 0,
 	"Completed_Waves": 0 
 	}
 	
-# variables
+# variables for enemies to use
 var number_ans = 500
 var number_ans_2 = 200
 var number_ans_3 = 100
 var amount_enemys_left = 0
 
+# Player name and score
 var player_name = "bob"
-# Player Stats for leaderboard
 var score: int
-var Missed: float = 200.0
-var Correct: float = 10.0
-var Accuracy: float
-var Combo: int
-var Completed_Waves:int
+var multiplier: float = 1.25
 # Signals
 signal tower_pos(pos)
 signal display_current_ans(ans)
@@ -42,10 +38,18 @@ func _ready():
 	})
 
 	SilentWolf.Scores.save_score("bob", 2, "main", metadata)
-	calculate_score()
+	calculate_accuracy()
 
-func calculate_score():
-	print(100.0 - (((Correct + Missed) - Correct) / (Correct + Missed) * 100.0))
-	print("work")
+func calculate_accuracy():
+	# calculates accuracy
+	metadata["Accuracy"] = snappedf(100.0 - (((metadata.values()[0] + metadata.values()[1]) - metadata.values()[0]) / (metadata.values()[0] + metadata.values()[1]) * 100.0), 0.01)
+	print(metadata.values()[2])
+	
+	# calculates score using multipliers
+	
+	print(round(metadata["Correct"] * multiplier))
 
+func add_to_score(hit_point):
+	score = hit_point * multiplier
+	pass
 
