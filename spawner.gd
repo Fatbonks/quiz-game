@@ -1,52 +1,51 @@
 extends Node2D
-
-# variables that get seen in the inspector and lets me add to it
-@export var spawn_point: PathFollow2D
-@export var enemy_timer: Timer
-@export var text: Label
-
-# preloads the enemy file to be used in order to instance the enemy into the scene
-var enemy = preload("res://enemy.tscn")
-# checks if the enemy can spawn after a certain time limit
-var can_spawn: bool = true
-# for debug purposes lets the player submit the amount of enemys that can spawn
-var given_points:int = 5
-# current amount of enemys that need to be spawned in
-@export var current_amount:int
-
+@onready var spawn_point = $Path2D/PathFollow2D
+@onready var timer = $enemy_spawn_timer
+@export var enemy_list = {}
+@export var currwave:int 
+@export var enemy_to_spawn = []
+var wave_value:int
+var can_spawn:bool = true
+var enemy_spawn_type = []
+var amount_of_enemies:int
+var can_generate:bool = false
 
 func _ready():
-	Global.amount_enemys_left = current_amount
-	text.text = "enemies left: " + str(Global.amount_enemys_left)
+	Global.connect("start_wave", generate_wave)
 
-func _process(_delta):
-	text.text = "enemies left: " + str(Global.amount_enemys_left)
-	# checks if there is any enemies to spawn if there is then it will spawn it.
-	# then sets the can_spawn to false and calls an timer 
-	if current_amount > 0 and can_spawn == true:
-		spawn_point.progress_ratio = randf_range(0, 1)
-		var enemyinstance = enemy.instantiate()
-		add_child(enemyinstance)
-		enemyinstance.position = spawn_point.global_position
-		can_spawn = false
-		current_amount -= 1
-		enemy_timer.start(randi_range(1, 2))
+func _process(delta):
+	if can_spawn:
+		if len(enemy_to_spawn) > 0:
+			randomize()
+			var inst_enemy = enemy_to_spawn[0].instantiate()
+			spawn_point.progress_ratio = randf_range(0, 1)
+			add_child(inst_enemy)
+			inst_enemy.global_position = spawn_point.global_position
+			enemy_to_spawn.remove_at(0)
+			can_spawn = false
+			timer.start(1)
+	
 
-# when timer ends it sets can_spawn = true
+func generate_wave():
+	currwave += 1
+	Global.current_wave = currwave
+	Global.difficulty_multiplier += 0.5
+	wave_value = currwave * 5
+	generate_enemies()
+
+func generate_enemies():
+	randomize()
+	var generated_enemies = []
+	while wave_value > 0:
+		var rand_enemy = randi_range(0, len(enemy_list) - 1)
+		var rand_enemy_cost = enemy_list.values()[rand_enemy].values()[0]
+		if wave_value - rand_enemy_cost >= 0:
+			generated_enemies.append(enemy_list.keys()[rand_enemy])
+			wave_value -= rand_enemy_cost
+		elif wave_value <= 0:
+			break
+	enemy_to_spawn.clear()
+	enemy_to_spawn = generated_enemies
+	Global.amount_enemys_left = len(enemy_to_spawn)
 func _on_enemy_spawn_timer_timeout():
 	can_spawn = true
-
-# submits the amount of enemys the player has selected (only for debug purposes)
-func _on_button_pressed():
-	current_amount = given_points
-	Global.amount_enemys_left = current_amount
-	text.text = "enemies left: " + str(Global.amount_enemys_left)
-
-#gives an option of 5, 10 or 30 enemies which the player can spawn (omly for debug purposes)
-func _on_option_button_item_selected(index):
-	if index == 2:
-		given_points = 5
-	if index == 1:
-		given_points = 10
-	if index == 0:
-		given_points = 30

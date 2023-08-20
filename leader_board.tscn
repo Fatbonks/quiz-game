@@ -1,0 +1,173 @@
+[gd_scene load_steps=8 format=3 uid="uid://i5y6e0vi41m8"]
+
+[ext_resource type="Script" path="res://LeaderBoard.gd" id="1_lfnw6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0q8w3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y4gjv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y54uw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_upwrj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d4qje"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_65hdm"]
+
+[node name="LeaderBoard" type="Control" node_paths=PackedStringArray("names", "score_list", "correct", "missed", "accuracy")]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -340.0
+offset_right = 576.0
+offset_bottom = 324.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+script = ExtResource("1_lfnw6")
+names = NodePath("Player_names/ItemList")
+score_list = NodePath("Score/ItemList")
+correct = NodePath("Correct/ItemList")
+missed = NodePath("Missed/ItemList")
+accuracy = NodePath("Accuracy/ItemList")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -579.0
+offset_top = -344.0
+offset_right = 575.0
+offset_bottom = 328.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.768627)
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 26.0
+grow_horizontal = 2
+theme_override_constants/h_separation = 155
+columns = 5
+
+[node name="Label" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Name"
+
+[node name="Label2" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Score"
+
+[node name="Label3" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Correct"
+
+[node name="Label4" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Missed
+"
+
+[node name="Label5" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Accuracy"
+
+[node name="Player_names" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 24.0
+offset_right = 202.0
+offset_bottom = 312.0
+
+[node name="ItemList" type="ItemList" parent="Player_names"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_0q8w3")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_y4gjv")
+auto_height = true
+
+[node name="Score" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 202.0
+offset_top = 24.0
+offset_right = 400.0
+offset_bottom = 312.0
+theme_override_constants/h_separation = 0
+
+[node name="ItemList" type="ItemList" parent="Score"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_y54uw")
+auto_height = true
+
+[node name="Correct" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 24.0
+offset_right = 613.0
+offset_bottom = 312.0
+theme_override_constants/h_separation = -1
+
+[node name="ItemList" type="ItemList" parent="Correct"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_upwrj")
+auto_height = true
+
+[node name="Missed" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 613.0
+offset_top = 24.0
+offset_right = 823.0
+offset_bottom = 312.0
+theme_override_constants/h_separation = -1
+
+[node name="ItemList" type="ItemList" parent="Missed"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_d4qje")
+auto_height = true
+
+[node name="Accuracy" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 823.0
+offset_top = 24.0
+offset_right = 1147.0
+offset_bottom = 312.0
+theme_override_constants/h_separation = -1
+
+[node name="ItemList" type="ItemList" parent="Accuracy"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_65hdm")
+auto_height = true
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -55.0
+offset_top = -71.0
+offset_right = 111.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Close"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

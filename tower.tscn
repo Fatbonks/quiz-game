@@ -2,18 +2,16 @@
 
 [ext_resource type="Script" path="res://Tower.gd" id="1_eqkcq"]
 [ext_resource type="Texture2D" uid="uid://oxft0mdkppvb" path="res://health.png" id="3_fo3hj"]
-[ext_resource type="PackedScene" uid="uid://0kgc1tjqwcas" path="res://towersprite.tscn" id="3_rhnx8"]
 
-[node name="Tower" type="Node2D" node_paths=PackedStringArray("healthbar") groups=["tower"]]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2g7p4"]
+size = Vector2(214, 193)
+
+[node name="Tower" type="Node2D" node_paths=PackedStringArray("healthbar", "text") groups=["tower"]]
 position = Vector2(51, 11)
 script = ExtResource("1_eqkcq")
 healthbar = NodePath("Control/TextureProgressBar")
+text = NodePath("interact_area/Label")
 metadata/_edit_group_ = true
-
-[node name="towersprite" parent="." instance=ExtResource("3_rhnx8")]
-visible = false
-position = Vector2(8, -72)
-layer_0/tile_data = PackedInt32Array(1, 65536, 1, 65537, 65536, 1, 131073, 327680, 1, 196605, 262144, 1, 65533, 196608, 1, 131069, 196608, 1, 196606, 131072, 0, 196607, 131072, 0, 131072, 131072, 0, 65534, 0, 0, 131070, 0, 0, 131071, 0, 0, 65535, 0, 0, 0, 0, 0, 65536, 0, 0, 262141, 589824, 4, 262142, 327680, 2, 262143, 131072, 1, 196608, 327680, 2, 196609, 720896, 4, 262145, 720896, 4, 262144, 131072, 1, 327679, 458752, 1, 327678, 262144, 3, 393213, 589824, 4, 393214, 262144, 2, 393215, 262144, 3, 327680, 262144, 2, 327677, 589824, 4, 327681, 720896, 4, 393217, 720896, 4, 393216, 262144, 3, 458751, 589824, 3, 458750, 262144, 3, 458749, 589824, 4, -3, 262144, 0, -2, 131072, 2, -1, 131072, 2, -65536, 131072, 2, -65535, 327680, 0, 524285, 131072, 4, 524286, 131072, 4, 524287, 196608, 4, 458752, 131072, 4, 458753, 131072, 4, 458748, 131072, 262148, 393212, 131072, 262148, 327676, 131072, 262148, 262140, 131072, 262148, 393218, 131072, 196612, 327682, 131072, 196612, 262146, 131072, 196612, 196610, 131072, 196612, 458754, 327680, 4, 524284, 327680, 65540)
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(-11, -3)
@@ -65,4 +63,22 @@ max_value = 50.0
 value = 50.0
 texture_progress = ExtResource("3_fo3hj")
 
+[node name="interact_area" type="Area2D" parent="."]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="interact_area"]
+position = Vector2(2, -7.5)
+shape = SubResource("RectangleShape2D_2g7p4")
+
+[node name="Label" type="Label" parent="interact_area"]
+visible = false
+offset_left = -89.0
+offset_top = -141.0
+offset_right = 101.0
+offset_bottom = -89.0
+text = "Press e to start wave 
+press esc for main menu"
+
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="interact_area" to="." method="_on_interact_area_body_entered"]
+[connection signal="body_exited" from="interact_area" to="." method="_on_interact_area_body_exited"]

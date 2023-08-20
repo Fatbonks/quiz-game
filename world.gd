@@ -1,15 +1,9 @@
 extends Node2D
 
-@export var label: Label
-
-func _ready():
-	label.text = "50"
-	Global.connect("display_current_ans", update_label)
-	
-func update_label(text):
-	label.text = str(text)
-
-
-
-
-
+@export var enemy_text: Label
+@export var score_text: Label
+@export var wave_text: Label
+func _process(delta):
+	enemy_text.text = "enemies left: " + str(Global.amount_enemys_left)
+	score_text.text = "Score: " + str(Global.score)
+	wave_text.text = "Current Wave: " + str(Global.current_wave)

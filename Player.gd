@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @export var world: Node2D
+@export var quiz_ans: Label
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 var bullet = preload("res://bullet.tscn")
@@ -16,11 +17,12 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 func _ready():
 	dagger.visible = true
 	quiz_num = Global.number_ans
-	Global.emit_signal("display_current_ans", quiz_num)
 	current_weap = 1
 
 func _physics_process(_delta):
 	look_at(get_global_mouse_position())
+	quiz_ans.text = str(quiz_num)
+	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction_x = Input.get_axis("ui_left", "ui_right")
@@ -54,21 +56,18 @@ func _physics_process(_delta):
 	if Input.is_action_just_pressed("inv_1"):
 		current_weap = 1
 		quiz_num = Global.number_ans
-		Global.emit_signal("display_current_ans", quiz_num)
 		dagger.visible = true
 		sword.visible = false
 		axe.visible = false
 	elif Input.is_action_just_pressed("inv_2"):
 		current_weap = 2
 		quiz_num = Global.number_ans_2
-		Global.emit_signal("display_current_ans", quiz_num)
 		dagger.visible = false
 		sword.visible = true
 		axe.visible = false
 	elif Input.is_action_just_pressed("inv_3"):
 		current_weap = 3
 		quiz_num = Global.number_ans_3
-		Global.emit_signal("display_current_ans", quiz_num)
 		dagger.visible = false
 		sword.visible = false
 		axe.visible = true
@@ -76,21 +75,18 @@ func _physics_process(_delta):
 		if current_weap == 1:
 			current_weap = 2
 			quiz_num = Global.number_ans_2
-			Global.emit_signal("display_current_ans", quiz_num)
 			dagger.visible = false
 			sword.visible = true
 			axe.visible = false 
 		elif current_weap == 2:
 			current_weap = 3
 			quiz_num = Global.number_ans_3
-			Global.emit_signal("display_current_ans", quiz_num)
 			dagger.visible = false
 			sword.visible = false
 			axe.visible = true
 		elif current_weap == 3:
 			current_weap = 1
 			quiz_num = Global.number_ans
-			Global.emit_signal("display_current_ans", quiz_num)
 			dagger.visible = true
 			sword.visible = false
 			axe.visible = false

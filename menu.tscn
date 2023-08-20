@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dgyfuumik68gn"]
+[gd_scene load_steps=6 format=3 uid="uid://dgyfuumik68gn"]
 
-[ext_resource type="PackedScene" uid="uid://0kgc1tjqwcas" path="res://towersprite.tscn" id="1_nhicq"]
 [ext_resource type="Script" path="res://menu.gd" id="1_xcjea"]
-[ext_resource type="PackedScene" uid="uid://d2jidtf4nbafu" path="res://world.tscn" id="2_agvxf"]
+[ext_resource type="PackedScene" uid="uid://i5y6e0vi41m8" path="res://leader_board.tscn" id="2_nxg2y"]
 
 [sub_resource type="Animation" id="Animation_y2x4a"]
 length = 0.001
@@ -66,81 +65,38 @@ _data = {
 "new_animation": SubResource("Animation_7mlt8")
 }
 
-[node name="menu" type="Node2D"]
+[node name="menu" type="Node2D" node_paths=PackedStringArray("submit_score", "leaderboard", "player_name_box", "display_score", "display_accuracy", "display_correct", "display_missed")]
 script = ExtResource("1_xcjea")
-
-[node name="Button" type="Button" parent="."]
-offset_left = 382.0
-offset_top = 150.0
-offset_right = 591.0
-offset_bottom = 262.0
-text = "play!!!!!"
-
-[node name="towersa p;lo" parent="." instance=ExtResource("1_nhicq")]
-visible = false
-position = Vector2(681, 354)
-
-[node name="towersa p;lo2" parent="." instance=ExtResource("1_nhicq")]
-visible = false
-position = Vector2(290, 211)
-
-[node name="towersa p;lo3" parent="." instance=ExtResource("1_nhicq")]
-visible = false
-position = Vector2(781, 186)
-
-[node name="towersa p;lo4" parent="." instance=ExtResource("1_nhicq")]
-visible = false
-position = Vector2(296, 372)
-
-[node name="world" parent="." instance=ExtResource("2_agvxf")]
-position = Vector2(494, 320)
-metadata/_edit_group_ = true
-
-[node name="Player" parent="world" index="0"]
-visible = false
-script = null
-
-[node name="Tower" parent="world" index="1"]
-visible = false
-
-[node name="Area2D" parent="world/Tower" index="2"]
-visible = false
-
-[node name="Control" parent="world/Tower" index="4"]
-visible = false
-
-[node name="TextureProgressBar" parent="world/Tower/Control" index="0"]
-visible = false
-
-[node name="spawner" parent="world" index="2"]
-visible = false
-
-[node name="Control" parent="world" index="5"]
-visible = false
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(500, 326)
-scale = Vector2(0.00489137, 12.6738)
-zoom = Vector2(1.675, 1.675)
+submit_score = NodePath("Control/ColorRect")
+leaderboard = NodePath("LeaderBoard")
+player_name_box = NodePath("Control/ColorRect/LineEdit")
+display_score = NodePath("Score")
+display_accuracy = NodePath("Accuracy")
+display_correct = NodePath("Correct")
+display_missed = NodePath("Missed")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("Control/Label")
+root_node = NodePath("Control2/Label")
 libraries = {
 "": SubResource("AnimationLibrary_4yvb3")
 }
 
-[node name="Control" type="Control" parent="AnimationPlayer"]
+[node name="Control2" type="Control" parent="AnimationPlayer"]
 layout_mode = 3
-anchor_bottom = 0.031
-offset_left = 489.0
-offset_top = 292.0
-offset_right = 529.0
-offset_bottom = 311.912
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -15.9999
+offset_top = 132.0
+offset_right = 24.0001
+offset_bottom = 151.912
+grow_horizontal = 2
 rotation = -0.174533
 scale = Vector2(1.5, 1.5)
 metadata/_edit_group_ = true
 
-[node name="Label" type="Label" parent="AnimationPlayer/Control"]
+[node name="Label" type="Label" parent="AnimationPlayer/Control2"]
+z_index = -1
 layout_mode = 0
 offset_left = -62.0
 offset_top = -14.0
@@ -148,18 +104,149 @@ offset_right = 65.0
 offset_bottom = 12.0
 text = "Cool quizx game"
 
-[node name="Label" type="Label" parent="."]
-offset_left = 346.0
-offset_top = 386.0
-offset_right = 810.0
-offset_bottom = 516.0
-text = "howe to play!
-wasd - to move
-left  click - to shoot
-changing between quiz answers - 1 2  3
-to know what answer your on look at the bottom left cornor"
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 769.0
+offset_bottom = 432.0
+scale = Vector2(1.5, 1.5)
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[node name="Button" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -48.5
+offset_right = 75.0
+offset_bottom = 48.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "play!!!!!"
 
-[editable path="world"]
-[editable path="world/Tower"]
+[node name="Submit_score" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -70.0
+offset_right = 108.0
+grow_vertical = 0
+text = "submit score"
+
+[node name="Leaderboard" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -108.0
+offset_top = -70.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Leaderboard
+"
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.5
+offset_top = -102.0
+offset_right = 205.5
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.964706)
+
+[node name="submit" type="Button" parent="Control/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -76.0
+offset_top = -26.5
+offset_right = 75.0
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "submit"
+
+[node name="close" type="Button" parent="Control/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.6667
+offset_top = 38.8333
+offset_right = 75.3333
+offset_bottom = 82.8333
+grow_horizontal = 2
+grow_vertical = 2
+text = "Close"
+
+[node name="LineEdit" type="LineEdit" parent="Control/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -166.333
+offset_top = -89.8333
+offset_right = 167.667
+offset_bottom = -50.8333
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Enter username"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(577, 324)
+scale = Vector2(0.00489137, 12.6738)
+
+[node name="Score" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Score"
+
+[node name="Accuracy" type="Label" parent="."]
+offset_top = 32.0
+offset_right = 70.0
+offset_bottom = 58.0
+text = "Accuracy"
+
+[node name="Correct" type="Label" parent="."]
+offset_top = 64.0
+offset_right = 58.0
+offset_bottom = 90.0
+text = "Correct"
+
+[node name="Missed" type="Label" parent="."]
+offset_top = 95.0
+offset_right = 55.0
+offset_bottom = 121.0
+text = "Missed"
+
+[node name="LeaderBoard" parent="." instance=ExtResource("2_nxg2y")]
+visible = false
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1152.0
+offset_bottom = 664.0
+
+[connection signal="pressed" from="Control/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Control/Submit_score" to="." method="_on_submit_score_pressed"]
+[connection signal="pressed" from="Control/Leaderboard" to="." method="_on_leaderboard_pressed"]
+[connection signal="pressed" from="Control/ColorRect/submit" to="." method="_on_submit_pressed"]
+[connection signal="pressed" from="Control/ColorRect/close" to="." method="_on_close_pressed"]

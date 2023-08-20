@@ -32,6 +32,3 @@ enem_ai = NodePath("../enemyAi")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_3itbf")
-
-[connection signal="body_entered" from="Hitbox" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="Hitbox" to="." method="_on_area_2d_body_exited"]
