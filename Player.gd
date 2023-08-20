@@ -1,24 +1,30 @@
 extends CharacterBody2D
 
+# lets me assign an object to variable in the inspector
 @export var world: Node2D
 @export var quiz_ans: Label
+
+#constant
 const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
+
+#variable
 var bullet = preload("res://bullet.tscn")
 var quiz_num:int
 var current_weap:int
+# finds these objects in the current scene
 @onready var sound = $AudioStreamPlayer
 @onready var dagger = $dagger 
 @onready var sword = $sword
 @onready var axe = $axe
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-
+# sets the weapon for the player
 func _ready():
 	dagger.visible = true
 	quiz_num = Global.number_ans
 	current_weap = 1
-
+# this is the movement code, player bullet spawning and switching between weapons
 func _physics_process(_delta):
 	look_at(get_global_mouse_position())
 	quiz_ans.text = str(quiz_num)
@@ -71,23 +77,4 @@ func _physics_process(_delta):
 		dagger.visible = false
 		sword.visible = false
 		axe.visible = true
-	elif Input.is_action_just_pressed("change_weapon"):
-		if current_weap == 1:
-			current_weap = 2
-			quiz_num = Global.number_ans_2
-			dagger.visible = false
-			sword.visible = true
-			axe.visible = false 
-		elif current_weap == 2:
-			current_weap = 3
-			quiz_num = Global.number_ans_3
-			dagger.visible = false
-			sword.visible = false
-			axe.visible = true
-		elif current_weap == 3:
-			current_weap = 1
-			quiz_num = Global.number_ans
-			dagger.visible = true
-			sword.visible = false
-			axe.visible = false
 	

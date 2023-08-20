@@ -1,15 +1,21 @@
 extends Node2D
-@onready var spawn_point = $Path2D/PathFollow2D
-@onready var timer = $enemy_spawn_timer
+# lets me assign an object to variable in the inspector
 @export var enemy_list = {}
 @export var currwave:int 
 @export var enemy_to_spawn = []
+
+# finds these objects in the current scene
+@onready var spawn_point = $Path2D/PathFollow2D
+@onready var timer = $enemy_spawn_timer
+
+# variables
 var wave_value:int
 var can_spawn:bool = true
 var enemy_spawn_type = []
 var amount_of_enemies:int
 var can_generate:bool = false
 
+#lets me start the wave 
 func _ready():
 	Global.connect("start_wave", generate_wave)
 
@@ -25,7 +31,7 @@ func _process(delta):
 			can_spawn = false
 			timer.start(1)
 	
-
+# genarates the wave increasing the difficulty each wave
 func generate_wave():
 	currwave += 1
 	Global.current_wave = currwave
@@ -33,6 +39,7 @@ func generate_wave():
 	wave_value = currwave * 5
 	generate_enemies()
 
+# generates enemys based randomly using enemies in the enemy_list you can only see the list in the inspector
 func generate_enemies():
 	randomize()
 	var generated_enemies = []
@@ -47,5 +54,6 @@ func generate_enemies():
 	enemy_to_spawn.clear()
 	enemy_to_spawn = generated_enemies
 	Global.amount_enemys_left = len(enemy_to_spawn)
+
 func _on_enemy_spawn_timer_timeout():
 	can_spawn = true

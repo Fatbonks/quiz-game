@@ -6,7 +6,7 @@ extends Control
 @export var missed: ItemList
 @export var accuracy: ItemList
 
-
+# updates the leaderboards
 func _update_leaderboard():
 	names.clear()
 	score_list.clear()
@@ -22,7 +22,6 @@ func _update_leaderboard():
 		correct.add_item(str(score.metadata["Correct"]))
 		missed.add_item(str(score.metadata["Missed"]))
 		accuracy.add_item(str(score.metadata["Accuracy"]) + "%")
-		print("Player name: " + str(score.player_name) + ", score: " + str(score.score) + ", metadata: " + str(score.metadata))
 
 
 func _on_button_pressed():

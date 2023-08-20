@@ -1,7 +1,5 @@
 extends Node2D
-var tower_position
-var in_range: bool = true
-var can_spawn: bool = true
+# finds these objects in the current scene
 @onready var timer = $Timer
 @onready var enemy_bullet = preload("res://enemy_bullet.tscn")
 @onready var pos_1 = $bullet_pos
@@ -9,18 +7,27 @@ var can_spawn: bool = true
 @onready var pos_3 = $bullet_pos3
 @onready var pos_4 = $bullet_pos4
 
+# variables
+var tower_position
+var in_range: bool = true
+var can_spawn: bool = true
+
+
+# connects an signal which waits for an other object to send the position of the tower
 func _ready():
 	Global.connect("tower_pos", tower_pos)
 
-
+# gets the tower position
 func tower_pos(pos):
 	tower_position = pos
 
 
 func _process(delta):
-	if in_range == true:
-		position = position.move_toward(tower_position, round((50 * Global.difficulty_multiplier) * delta))
-		
+	# move towards tower 
+	position = position.move_toward(tower_position, round((50 * Global.difficulty_multiplier) * delta))
+	
+	#spawns bullets around the enemy every 2 seconds with each wave decreasing the time it take to spawn -
+	# - an new bullet
 	if can_spawn == true:
 		var inst_bullet_1 = enemy_bullet.instantiate()
 		get_parent().add_child(inst_bullet_1)
