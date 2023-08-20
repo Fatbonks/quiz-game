@@ -17,8 +17,9 @@ func _ready():
 	display_missed.text = "Missed: " + str(Global.metadata["Missed"])
 
 func _on_button_pressed():
-	get_tree().change_scene_to_file("res://world.tscn")
 	Global.reset_stats()
+	get_tree().change_scene_to_file("res://world.tscn")
+	
 
 
 func _on_leaderboard_pressed():

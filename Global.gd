@@ -56,3 +56,6 @@ func reset_stats():
 	metadata["Missed"]  = 0.0
 	metadata["Accuracy"] = 0.0
 	score = 0
+	amount_enemys_left = 0
+	current_wave = 0
+	difficulty_multiplier = 1.00
